@@ -1,0 +1,81 @@
+import $ from 'jquery';
+
+const ModuleUser = {
+    state: {
+        id: "",
+        username: "",
+        profpic: "",
+        access: "",
+        is_login: false,
+    },
+    getters: {
+    },
+    mutations: {
+        updateUser(state, user){
+            state.id = user.id;
+            state.username = user.username;
+            state.profpic = user.faceImg;
+            state.access = user.access;
+            state.is_login = user.is_login;
+        },
+
+        logout(state) {
+            state.id = "";
+            state.username = "";
+            state.profpic = "";
+            state.access = "";
+            state.is_login = false;
+        }
+    },
+    actions: {
+        login(context, data) {
+            let user = {
+                "username": data.username,
+                "password": data.password,
+            }
+
+            let userStr = JSON.stringify(user);
+            $.ajax({
+                url: "http://192.168.31.203:8066/cloudrive/login/",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                data: userStr,
+                success(resp){
+                    const access = resp.data;
+                    console.log(resp);
+                    console.log(access);
+                    
+                    $.ajax({
+                        url: "http://192.168.31.203:8066/user/getUserInfo/",
+                        type: "GET",
+                        data: {
+                            token: access,
+                        },
+                        headers: {
+                            'Authorization': "Bearer " + access,
+                        },
+                        success(resp) {
+                            const user = resp.data;
+                            console.log(user); 
+                            context.commit("updateUser", {
+                                ...user,
+                                access: access,
+                                is_login: true,
+                            });
+                            data.success();
+                        }
+                    });
+                },
+                error() {
+                    data.error();
+                },
+            });        
+        },
+    },
+    modules: {
+      
+    }
+}
+
+export default ModuleUser;
