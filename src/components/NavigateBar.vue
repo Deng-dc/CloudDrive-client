@@ -58,7 +58,10 @@ export default{
 .navbar-brand{
     font-family: 'Courier New', Courier, monospace;
     font-weight: bolder;
-    font-size: 30px;
+    font-size: 3rem;
 }
 
+li{
+  font-size: 1.3rem;
+}
 </style>
