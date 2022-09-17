@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style scoped>
-.foot-content{
+.foot-content {
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
     font-weight: bold;

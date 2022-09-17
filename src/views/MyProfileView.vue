@@ -1,8 +1,8 @@
 <template>
-<NavigateBar></NavigateBar>
-<div>
-    我
-</div>
+    <NavigateBar></NavigateBar>
+    <div>
+        我
+    </div>
 </template>
 
 <script>

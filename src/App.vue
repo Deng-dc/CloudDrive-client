@@ -1,5 +1,5 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <script>
@@ -9,10 +9,11 @@ import 'bootstrap/dist/js/bootstrap'
 export default {
   name: 'App',
   components: {
-    
+
   }
 }
 </script>
 
 <style scoped>
+
 </style>

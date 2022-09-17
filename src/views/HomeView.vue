@@ -23,7 +23,7 @@ export default {
     NavigateBar,
     SideBar,
     ContentDisplay,
-}
+  }
 }
 </script>
 

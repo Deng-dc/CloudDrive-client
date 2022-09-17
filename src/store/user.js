@@ -47,7 +47,7 @@ const ModuleUser = {
                     console.log(access);
                     
                     $.ajax({
-                        url: "http://192.168.31.203:8066/user/getUserInfo/",
+                        url: "http://192.168.31.203:8066/getUserInfo/",
                         type: "GET",
                         data: {
                             token: access,

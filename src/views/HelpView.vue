@@ -1,12 +1,12 @@
 <template>
-<NavigateBar />
+    <NavigateBar />
 </template>
 
 <script>
 import NavigateBar from '../components/NavigateBar.vue'
 
 export default {
-    name : 'HelpView',
+    name: 'HelpView',
     components: {
         NavigateBar,
     }
