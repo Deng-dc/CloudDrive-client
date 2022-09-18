@@ -36,7 +36,7 @@ const ModuleUser = {
 
             let userStr = JSON.stringify(user);
             $.ajax({
-                url: "http://192.168.31.203:8066/cloudrive/login/",
+                url: "http://192.168.100.7:8066/login/",
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
@@ -47,7 +47,7 @@ const ModuleUser = {
                     console.log(access);
                     
                     $.ajax({
-                        url: "http://192.168.31.203:8066/getUserInfo/",
+                        url: "http://192.168.100.7:8066/getUserInfo/",
                         type: "GET",
                         data: {
                             token: access,

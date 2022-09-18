@@ -7,11 +7,8 @@
             <div class="card-body path-navigate">
                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
+                        <li class="breadcrumb-item" style="cursor: pointer;" @click="getHomeDirFiles">
                             全部文件
-                        </li>
-                        <li class="breadcrumb-item">
-                            Library
                         </li>
                     </ol>
                 </nav>
@@ -26,12 +23,42 @@
 <script>
 import ToolBar from './ToolBar.vue';
 import ContentArea from './ContentArea.vue';
+import { ref } from 'vue';
+import $ from 'jquery';
 
 export default {
     name: "ContentDisplay",
     components: {
         ToolBar,
         ContentArea,
+    },
+    props: {
+        username: String,
+        homeUrl: String,
+    },
+    setup(props) {
+        const homeUrl = ref(props.homeUrl);
+        const username = ref(props.username);
+        console.log(username.value);
+        console.log(homeUrl.value);
+
+        const getHomeDirFiles = () => {
+            $.ajax({
+                url: "http://192.168.100.7:8066/drive/test1/",
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json",
+                success(resp) {
+                    console.log(resp);
+                    const homeFiles = resp.data;
+                    console.log(homeFiles);
+                }
+            });
+        };
+
+        return {
+            getHomeDirFiles,
+        }
     }
 }
 </script>

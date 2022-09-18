@@ -4,12 +4,18 @@ import RegisterView from '../views/RegisterView.vue'
 import LoginView from '../views/LoginView.vue'
 import HelpView from '../views/HelpView.vue'
 import MyProfileView from '../views/MyProfileView.vue'
+import MyDriveView from '../views/MyDriveView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/drive/:userName/',
+    name: 'mydrive',
+    component: MyDriveView
   },
   {
     path: '/register/',

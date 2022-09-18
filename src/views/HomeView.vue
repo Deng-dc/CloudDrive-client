@@ -1,29 +1,16 @@
 <template>
-  <NavigateBar />
-  <div class="container">
-    <div class="row justify-content-md-center">
-      <div class="col-3">
-        <SideBar />
-      </div>
-      <div class="col-9">
-        <ContentDisplay />
-      </div>
-    </div>
-  </div>
+    <NavigateBar />
+    <h1>首页</h1>
 </template>
 
 <script>
-import NavigateBar from '../components/NavigateBar.vue';
-import SideBar from '../components/SideBar.vue';
-import ContentDisplay from '../components/ContentDisplay.vue';
+import NavigateBar from "../components/NavigateBar.vue";
 
 export default {
-  name: 'HomeView',
-  components: {
-    NavigateBar,
-    SideBar,
-    ContentDisplay,
-  }
+    name: "HomeView",
+    components: {
+        NavigateBar,
+    }
 }
 </script>
 

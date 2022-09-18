@@ -9,7 +9,9 @@
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link class="nav-link" :to="{name: 'home'}">首页</router-link>
+            <router-link class="nav-link" :to="{name: 'mydrive', params: {userName: $store.state.user.username}}"
+              v-if="$store.state.user.is_login">我的网盘
+            </router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" :to="{name: 'help'}">帮助</router-link>
