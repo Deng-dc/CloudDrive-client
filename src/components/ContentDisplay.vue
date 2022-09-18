@@ -23,8 +23,9 @@
 <script>
 import ToolBar from './ToolBar.vue';
 import ContentArea from './ContentArea.vue';
-import { ref } from 'vue';
+// import { ref } from 'vue';
 import $ from 'jquery';
+import { useStore } from 'vuex';
 
 export default {
     name: "ContentDisplay",
@@ -36,25 +37,22 @@ export default {
         username: String,
         homeUrl: String,
     },
-    setup(props) {
-        const homeUrl = ref(props.homeUrl);
-        const username = ref(props.username);
-        console.log(username.value);
-        console.log(homeUrl.value);
-
+    setup() {
+        const store = useStore();
         const getHomeDirFiles = () => {
+            let root = store.state.user.user_drive_root_url;
+            console.log(root);
             $.ajax({
-                url: "http://192.168.100.7:8066/drive/test1/",
+                url: root,
                 type: "GET",
                 dataType: "json",
                 contentType: "application/json",
                 success(resp) {
                     console.log(resp);
-                    const homeFiles = resp.data;
-                    console.log(homeFiles);
+                    console.log(resp.data);
                 }
             });
-        };
+        }
 
         return {
             getHomeDirFiles,

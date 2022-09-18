@@ -7,6 +7,8 @@ const ModuleUser = {
         profpic: "",
         access: "",
         is_login: false,
+        drive_root_url: "http://192.168.100.7:8066/drive/",
+        user_drive_root_url: "",
     },
     getters: {
     },
@@ -17,6 +19,7 @@ const ModuleUser = {
             state.profpic = user.faceImg;
             state.access = user.access;
             state.is_login = user.is_login;
+            state.user_drive_root_url = state.drive_root_url + user.username + "/";
         },
 
         logout(state) {
