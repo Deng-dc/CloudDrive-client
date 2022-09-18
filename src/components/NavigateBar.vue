@@ -13,9 +13,6 @@
               v-if="$store.state.user.is_login">我的网盘
             </router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" :to="{name: 'help'}">帮助</router-link>
-          </li>
         </ul>
         <ul class="navbar-nav" v-if="!$store.state.user.is_login">
           <li class="nav-item">

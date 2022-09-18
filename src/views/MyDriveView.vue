@@ -16,8 +16,6 @@
 import NavigateBar from '../components/NavigateBar.vue';
 import SideBar from '../components/SideBar.vue';
 import ContentDisplay from '../components/ContentDisplay.vue';
-import { useStore } from 'vuex';
-import { computed } from 'vue';
 
 export default {
   name: 'MyDriveView',
@@ -25,15 +23,6 @@ export default {
     NavigateBar,
     SideBar,
     ContentDisplay,
-  },
-  setup() {
-    const username = computed(() => useStore().state.user.username);
-    const homeUrl = "http://192.168.100.7:8066/drive/" + username.value + "/";
-
-    return {
-      username,
-      homeUrl,
-    };
   },
 }
 </script>

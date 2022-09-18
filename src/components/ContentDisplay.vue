@@ -26,6 +26,7 @@ import ContentArea from './ContentArea.vue';
 // import { ref } from 'vue';
 import $ from 'jquery';
 import { useStore } from 'vuex';
+import { reactive } from 'vue';
 
 export default {
     name: "ContentDisplay",
@@ -33,14 +34,16 @@ export default {
         ToolBar,
         ContentArea,
     },
-    props: {
-        username: String,
-        homeUrl: String,
-    },
     setup() {
         const store = useStore();
+        let data = reactive({
+            homeFileList: [],
+            homeDirList: [],
+        });
         const getHomeDirFiles = () => {
             let root = store.state.user.user_drive_root_url;
+            // let fileList = [];
+            // let dirList = [];
             console.log(root);
             $.ajax({
                 url: root,
@@ -56,6 +59,7 @@ export default {
 
         return {
             getHomeDirFiles,
+            data,
         }
     }
 }
