@@ -59,7 +59,7 @@ export default {
             }
             let userStr = JSON.stringify(user);
             $.ajax({
-                url: "http://192.168.100.7:8066/register/",
+                url: "http://192.168.31.203:8066/register/",
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
