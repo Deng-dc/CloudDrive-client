@@ -3,8 +3,8 @@
     <div class="btn-group" role="group" aria-label="Basic outlined example">
       <div class="upload-btn">
         <!-- <button type="button" class="btn btn-outline-primary">上传</button> -->
-        <label for="upload" class="btn btn-outline-primary">上传</label>
-        <input type="file" class="upload-file" id="upload" @change="upload">
+        <!-- <label for="upload" class="btn btn-outline-primary">上传</label> -->
+        <!-- <input type="file" class="upload-file" id="upload" @change="upload"> -->
       </div>
       <div class="new-dir-btn">
         <button type="button" class="btn btn-outline-primary">新建文件夹</button>
@@ -34,6 +34,12 @@
         {{item}}
       </li>
     </ul>
+  </div>
+  <div class="card-body">
+    <el-upload name="file" class="upload-demo" drag action="none" :auto-upload="false" :on-change="uploadFile">
+      <i class="el-icon-upload"></i>
+      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+    </el-upload>
   </div>
 </template>
 
@@ -73,15 +79,28 @@ export default {
       });
     };
 
-    const upload = (event) => {
-      console.log(event);
+    const uploadFile = (file, fileList) => {
+      console.log(file);
+      console.log(fileList);
+      let data = new FormData();
+      data.append("myfile", file);
+      let directory = "photo"
+
+      $.ajax({
+        url: "http://192.168.31.203:8066/upload/?directory=" + directory + "&token=" + store.state.user.access,
+        type: "POST",
+        data: data,
+        cache: false,
+        processData: false,
+        contentType: false,
+      });
     };
 
     return {
       getHomeDirFiles,
       homeDirList,
       homeFileList,
-      upload,
+      uploadFile,
     }
   }
 }
