@@ -1,8 +1,6 @@
 <template>
   <div class="card-header">
     <div class="btn-group" role="group" aria-label="Basic outlined example">
-      <div class="upload-btn">
-      </div>
       <div class="new-dir-btn">
         <button type="button" class="btn btn-outline-primary">新建文件夹</button>
       </div>
@@ -11,15 +9,14 @@
       </div>
     </div>
   </div>
-  <!-- <div class="card-body path-navigate">
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item" style="cursor: pointer;" @click="getHomeDirFiles">
-          全部文件
-        </li>
-      </ol>
-    </nav>
-  </div> -->
+  <div class="card-body path-navigate">
+    <el-breadcrumb separator="/" style="cursor: pointer;">
+      <el-breadcrumb-item @click="getHomeDirFiles">全部文件</el-breadcrumb-item>
+      <el-breadcrumb-item>promotion management</el-breadcrumb-item>
+      <el-breadcrumb-item>promotion list</el-breadcrumb-item>
+      <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
+    </el-breadcrumb>
+  </div>
   <div class="card-body content-area">
     <el-table ref="multipleTableRef" :data="tableData" height="250" style="width: 100%"
       @selection-change="handleSelectionChange">
@@ -47,6 +44,7 @@ import { useStore } from 'vuex';
 import { reactive } from 'vue';
 import { UploadFilled } from '@element-plus/icons-vue'
 
+
 export default {
   name: "ContentArea",
   components: {
@@ -54,8 +52,12 @@ export default {
   },
   setup() {
     const store = useStore();
-    let homeFileList = reactive([]);
-    let homeDirList = reactive([]);
+    const file = reactive({
+      filename: "",
+      is_directory: "",
+      fileSize: "",
+      lastModifyTime: "",
+    });
     const tableData = [
       {
         date: '2016-05-07',
@@ -99,29 +101,25 @@ export default {
         success(resp) {
           console.log(resp);
           console.log(resp.data);
-          let respList = resp.data;
-          let i = 0;
-          while (respList[i] != "=========") {
-            i++;
-          }
-          let dirLength = i;
-          homeDirList = respList.slice(0, dirLength);
-          homeFileList = respList.slice(dirLength + 1, respList.length);
-          console.log("文件夹列表 : " + homeDirList);
-          console.log("文件列表 : " + homeFileList);
+          console.log(resp.data[0]);
+          console.log(resp.data[0].filename);
         }
       });
     };
+
+    const handleSelectionChange = () => {
+      console.log("handleSelectionChange");
+    }
 
     let directory = "photo"
     const uploadUrl = "http://192.168.31.203:8066/upload/?directory=" + directory + "&token=" + store.state.user.access;
 
     return {
       getHomeDirFiles,
-      homeDirList,
-      homeFileList,
       uploadUrl,
+      file,
       tableData,
+      handleSelectionChange,
     }
   }
 }
