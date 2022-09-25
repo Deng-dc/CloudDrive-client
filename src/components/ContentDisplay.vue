@@ -1,8 +1,6 @@
 <template>
-    <div class="container">
-        <div class="card">
-            <ContentArea />
-        </div>
+    <div class="card">
+        <ContentArea />
     </div>
 </template>
 

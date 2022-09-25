@@ -7,7 +7,7 @@ const ModuleUser = {
         profpic: "",
         access: "",
         is_login: false,
-        drive_root_url: "http://192.168.100.7:8066/drive/",
+        drive_root_url: "http://192.168.0.16:8066/drive/",
         user_drive_root_url: "",
     },
     getters: {
@@ -39,7 +39,7 @@ const ModuleUser = {
 
             let userStr = JSON.stringify(user);
             $.ajax({
-                url: "http://192.168.100.7:8066/login/",
+                url: "http://192.168.0.16:8066/login/",
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
@@ -50,7 +50,7 @@ const ModuleUser = {
                     console.log(access);
                     
                     $.ajax({
-                        url: "http://192.168.100.7:8066/getUserInfo/",
+                        url: "http://192.168.0.16:8066/getUserInfo/",
                         type: "GET",
                         data: {
                             token: access,

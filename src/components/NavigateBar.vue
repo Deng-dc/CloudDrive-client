@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <nav class="navbar navbar-expand-lg navbar-light navigater" style="background-color:#e0f2fd;">
     <div class="container">
       <router-link class="navbar-brand" :to="{name: 'home'}">Cloudrive</router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"

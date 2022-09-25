@@ -27,6 +27,16 @@
   <div class="card-body content-area">
     <el-table ref="multipleTableRef" :data="tableData" height="250" style="width: 100%" @row-click="clickItem">
       <el-table-column type="selection" width="55" />
+      <el-table-column>
+        <template #default="scope">
+          <el-icon v-if="scope.row.fileSize === '-'">
+            <Folder />
+          </el-icon>
+          <el-icon v-else>
+            <Files />
+          </el-icon>
+        </template>
+      </el-table-column>
       <el-table-column property="filename" label="文件名" width="400" />
       <el-table-column property="lastModifyTime" label="修改日期" width="200" />
       <el-table-column property="fileSize" label="大小" width="120" />
@@ -47,13 +57,15 @@ import $ from 'jquery';
 import { useStore } from 'vuex';
 import { reactive } from 'vue';
 import { ref } from 'vue';
-import { UploadFilled } from '@element-plus/icons-vue'
+import { UploadFilled, Folder, Files } from '@element-plus/icons-vue'
 
 
 export default {
   name: "ContentArea",
   components: {
     UploadFilled,
+    Folder,
+    Files,
   },
   setup() {
     const store = useStore();
@@ -70,7 +82,7 @@ export default {
         path.push(dir.path);
       }
       $.ajax({
-        url: "http://192.168.100.7:8066/createNewDir/?path=" + path + "&newDir=" + createDirName + "&token=" + store.state.user.access,
+        url: "http://192.168.0.16:8066/createNewDir/?path=" + path + "&newDir=" + createDirName + "&token=" + store.state.user.access,
         type: "POST",
         dataType: "json",
         contentType: "application/json",
@@ -156,7 +168,7 @@ export default {
         directory.push(dir.path);
       }
       // console.log("directory : " + directory);
-      uploadUrl.value = "http://192.168.100.7:8066/upload/?directory=" + directory + "&token=" + store.state.user.access;
+      uploadUrl.value = "http://192.168.0.16:8066/upload/?directory=" + directory + "&token=" + store.state.user.access;
       // console.log("getUploadDirectory uploadUrl : " + uploadUrl.value);
     }
 
