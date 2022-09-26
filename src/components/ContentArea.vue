@@ -25,7 +25,8 @@
     </el-breadcrumb>
   </div>
   <div class="card-body content-area">
-    <el-table ref="multipleTableRef" :data="tableData" height="250" style="width: 100%" @row-click="clickItem">
+    <el-table class="content-area-table" ref="multipleTableRef" :data="tableData" height="250" style="width: 100%"
+      @row-click="clickItem">
       <el-table-column type="selection" width="55" />
       <el-table-column>
         <template #default="scope">
@@ -41,6 +42,12 @@
       <el-table-column property="lastModifyTime" label="修改日期" width="200" />
       <el-table-column property="fileSize" label="大小" width="120" />
     </el-table>
+    <el-dialog v-model="dialogVisible" title="预览" draggable>
+      <div class="preview-image-area">
+        <el-image style="width: 200px; height: 200px"
+          src="http://192.168.31.203:8066/drive/test1/folder1/Drive-File.png" fit="contain" />
+      </div>
+    </el-dialog>
   </div>
   <div class="card-body upload-area">
     <el-upload class="upload-demo" drag :action="uploadUrl" :before-upload="getUploadDirectory">
@@ -73,6 +80,8 @@ export default {
     let currentDir = reactive([]);
     let uploadUrl = ref('');
     let newDirname = ref('');
+    const dialogVisible = ref(false);
+    let pictureAccessUrl = ref('');
 
     const createDir = () => {
       let createDirName = newDirname.value;
@@ -82,7 +91,7 @@ export default {
         path.push(dir.path);
       }
       $.ajax({
-        url: "http://192.168.0.16:8066/createNewDir/?path=" + path + "&newDir=" + createDirName + "&token=" + store.state.user.access,
+        url: "http://192.168.31.203:8066/createNewDir/?path=" + path + "&newDir=" + createDirName + "&token=" + store.state.user.access,
         type: "POST",
         dataType: "json",
         contentType: "application/json",
@@ -168,7 +177,7 @@ export default {
         directory.push(dir.path);
       }
       // console.log("directory : " + directory);
-      uploadUrl.value = "http://192.168.0.16:8066/upload/?directory=" + directory + "&token=" + store.state.user.access;
+      uploadUrl.value = "http://192.168.31.203:8066/upload/?directory=" + directory + "&token=" + store.state.user.access;
       // console.log("getUploadDirectory uploadUrl : " + uploadUrl.value);
     }
 
@@ -198,7 +207,17 @@ export default {
           },
         });
       } else {
-        console.log("文件暂不支持在线打开");
+        dialogVisible.value = true;
+        $.ajax({
+          url: "http://192.168.31.203:8066/loadFile/?fileTimestamp=" + row.lastModifyTime + "&filename=" + row.filename,
+          type: "GET",
+          dataType: "json",
+          contentType: "application/json",
+          success(resp) {
+            console.log(resp.data);
+            pictureAccessUrl = resp.data;
+          }
+        });
       }
     }
 
@@ -221,6 +240,8 @@ export default {
       currentDir,
       getUploadDirectory,
       getUUID,
+      dialogVisible,
+      pictureAccessUrl
     }
   }
 }
@@ -256,5 +277,13 @@ export default {
 .upload-file {
   opacity: 0;
   width: 0;
+}
+
+.content-area-table {
+  cursor: pointer;
+}
+
+.preview-image-area {
+  text-align: center;
 }
 </style>
