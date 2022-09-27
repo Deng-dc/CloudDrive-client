@@ -30,11 +30,23 @@
       <el-table-column type="selection" width="55" />
       <el-table-column>
         <template #default="scope">
-          <el-icon v-if="scope.row.fileSize === '-'">
+          <el-icon v-if="scope.row.fileTypeCode === '0'">
             <Folder />
           </el-icon>
-          <el-icon v-else>
-            <Files />
+          <el-icon v-else-if="scope.row.fileTypeCode === '1'">
+            <PictureFilled />
+          </el-icon>
+          <el-icon v-else-if="scope.row.fileTypeCode === '2'">
+            <DocumentCopy />
+          </el-icon>
+          <el-icon v-else-if="scope.row.fileTypeCode === '3'">
+            <Headset />
+          </el-icon>
+          <el-icon v-else-if="scope.row.fileTypeCode === '4'">
+            <VideoPlay />
+          </el-icon>
+          <el-icon v-else-if="scope.row.fileTypeCode === '5'">
+            <QuestionFilled />
           </el-icon>
         </template>
       </el-table-column>
@@ -42,12 +54,11 @@
       <el-table-column property="lastModifyTime" label="修改日期" width="200" />
       <el-table-column property="fileSize" label="大小" width="120" />
     </el-table>
-    <el-dialog v-model="dialogVisible" title="预览" draggable>
+    <!-- <el-dialog v-model="dialogVisible" title="预览" draggable>
       <div class="preview-image-area">
-        <el-image style="width: 200px; height: 200px"
-          src="http://192.168.31.203:8066/drive/test1/folder1/Drive-File.png" fit="contain" />
+        <el-image style="width: 200px; height: 200px" :src="pictureAccessUrl" fit="contain" />
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
   <div class="card-body upload-area">
     <el-upload class="upload-demo" drag :action="uploadUrl" :before-upload="getUploadDirectory">
@@ -64,7 +75,7 @@ import $ from 'jquery';
 import { useStore } from 'vuex';
 import { reactive } from 'vue';
 import { ref } from 'vue';
-import { UploadFilled, Folder, Files } from '@element-plus/icons-vue'
+import { UploadFilled, Folder, DocumentCopy, PictureFilled, Headset, VideoPlay, QuestionFilled } from '@element-plus/icons-vue'
 
 
 export default {
@@ -72,7 +83,11 @@ export default {
   components: {
     UploadFilled,
     Folder,
-    Files,
+    DocumentCopy,
+    PictureFilled,
+    Headset,
+    VideoPlay,
+    QuestionFilled
   },
   setup() {
     const store = useStore();
@@ -83,6 +98,7 @@ export default {
     const dialogVisible = ref(false);
     let pictureAccessUrl = ref('');
 
+    // 新疆文件夹
     const createDir = () => {
       let createDirName = newDirname.value;
       newDirname.value = "";
@@ -118,6 +134,7 @@ export default {
       });
     }
 
+    // 获取根目录下的文件
     const getHomeDirFiles = () => {
       // 每次回到根目录都需要清空当前的目录数组currentDir
       currentDir.splice(0, currentDir.length);
@@ -140,6 +157,7 @@ export default {
       });
     }
 
+    // 获取点击目录下的文件
     const getDistDirFiles = (item) => {
       let index = 0;
       for (let i = 0; i < currentDir.length; i++) {
@@ -167,6 +185,7 @@ export default {
       });
     };
 
+    // 获取当前上传的目录
     const getUploadDirectory = () => {
       // console.log("into before-upload");
       // console.log("currentDir : " + JSON.stringify(currentDir));
@@ -181,6 +200,7 @@ export default {
       // console.log("getUploadDirectory uploadUrl : " + uploadUrl.value);
     }
 
+    // 点击栏目: 若是文件夹则进入 若是文件则预览或者下载
     const clickItem = (row) => {
       if (row.fileSize === "-") {
         // 仅当是目录的时候才能进入下一个目录
@@ -199,6 +219,7 @@ export default {
           contentType: "application/json",
           success(resp) {
             let fileList = resp.data;
+            console.log("click item : " + resp.data);
             tableData.splice(0, tableData.length);
             for (let i = 0; i < fileList.length; i++) {
               tableData.push(fileList[i]);
@@ -214,8 +235,9 @@ export default {
           dataType: "json",
           contentType: "application/json",
           success(resp) {
-            console.log(resp.data);
+            console.log("pictureAccessUrl : " + resp.data);
             pictureAccessUrl = resp.data;
+            window.open(pictureAccessUrl, "_blank");
           }
         });
       }
