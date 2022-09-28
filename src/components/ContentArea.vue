@@ -2,6 +2,11 @@
   <div class="card-header">
     <div class="btn-group" role="group" aria-label="Basic outlined example">
       <div class="new-dir-area">
+        <div class="refresh-btn" @click="getHomeDirFiles">
+          <el-icon>
+            <Refresh />
+          </el-icon>
+        </div>
         <div class="new-dir-input">
           <el-input v-model="newDirname" placeholder="input new dir name" />
         </div>
@@ -73,9 +78,9 @@
 <script>
 import $ from 'jquery';
 import { useStore } from 'vuex';
-import { reactive } from 'vue';
+import { onMounted, reactive } from 'vue';
 import { ref } from 'vue';
-import { UploadFilled, Folder, DocumentCopy, PictureFilled, Headset, VideoPlay, QuestionFilled } from '@element-plus/icons-vue'
+import { UploadFilled, Folder, DocumentCopy, PictureFilled, Headset, VideoPlay, QuestionFilled, Refresh } from '@element-plus/icons-vue'
 
 
 export default {
@@ -87,7 +92,8 @@ export default {
     PictureFilled,
     Headset,
     VideoPlay,
-    QuestionFilled
+    QuestionFilled,
+    Refresh
   },
   setup() {
     const store = useStore();
@@ -97,6 +103,11 @@ export default {
     let newDirname = ref('');
     const dialogVisible = ref(false);
     let pictureAccessUrl = ref('');
+
+    onMounted(() => {
+      console.log("into onMounted !");
+      getHomeDirFiles();
+    })
 
     // 新疆文件夹
     const createDir = () => {
@@ -139,7 +150,7 @@ export default {
       // 每次回到根目录都需要清空当前的目录数组currentDir
       currentDir.splice(0, currentDir.length);
       let requestUrl = store.state.user.user_drive_root_url;
-      console.log("requestUrl : " + requestUrl);
+      // console.log("requestUrl : " + requestUrl);
       $.ajax({
         url: requestUrl,
         type: "POST",
@@ -274,6 +285,14 @@ export default {
   margin-left: 1rem;
   display: flex;
   flex-direction: row;
+}
+
+.refresh-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 1rem;
+  cursor: pointer;
 }
 
 .new-dir-input {
