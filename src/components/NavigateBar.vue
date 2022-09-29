@@ -23,9 +23,18 @@
           </li>
         </ul>
         <ul class="navbar-nav" v-else>
-          <li class="nav-item">
-            <router-link class="nav-link" :to="{name: 'myprofile', params: {userId: $store.state.user.id}}">
-              {{$store.state.user.username}}</router-link>
+          <li class="nav-item user-area">
+            <div class="user-icon">
+              <!-- <el-icon>
+                <User />
+              </el-icon> -->
+              <el-image class="user-icon-image" style="width: 50px; height: 50px"
+                src="https://avatars.githubusercontent.com/u/90923078?v=4" fit="contain" />
+            </div>
+            <div class="user-name">
+              <router-link class="nav-link" :to="{name: 'myprofile', params: {userId: $store.state.user.id}}">
+                {{$store.state.user.username}}</router-link>
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" style="cursor: pointer" @click="logout">退出</a>
@@ -64,5 +73,26 @@ export default {
 
 li {
   font-size: 1.3rem;
+}
+
+.user-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.user-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 4%;
+}
+
+.user-icon-image {
+  border-radius: 50%;
+}
+
+.user-name {
+  font-weight: bold;
 }
 </style>
