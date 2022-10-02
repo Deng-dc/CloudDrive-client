@@ -118,7 +118,8 @@ export default {
         path.push(dir.path);
       }
       $.ajax({
-        url: "http://192.168.31.203:8066/createNewDir/?path=" + path + "&newDir=" + createDirName + "&token=" + store.state.user.access,
+        // url: "http://192.168.31.203:8066/createNewDir/?path=" + path + "&newDir=" + createDirName + "&token=" + store.state.user.access,
+        url: "http://192.168.0.16:8066/createNewDir/?path=" + path + "&newDir=" + createDirName + "&token=" + store.state.user.access,
         type: "POST",
         dataType: "json",
         contentType: "application/json",
@@ -207,7 +208,8 @@ export default {
         directory.push(dir.path);
       }
       // console.log("directory : " + directory);
-      uploadUrl.value = "http://192.168.31.203:8066/upload/?directory=" + directory + "&token=" + store.state.user.access;
+      // uploadUrl.value = "http://192.168.31.203:8066/upload/?directory=" + directory + "&token=" + store.state.user.access;
+      uploadUrl.value = "http://192.168.0.16:8066/upload/?directory=" + directory + "&token=" + store.state.user.access;
       // console.log("getUploadDirectory uploadUrl : " + uploadUrl.value);
     }
 
@@ -241,7 +243,8 @@ export default {
       } else {
         dialogVisible.value = true;
         $.ajax({
-          url: "http://192.168.31.203:8066/loadFile/?fileTimestamp=" + row.lastModifyTime + "&filename=" + row.filename,
+          // url: "http://192.168.31.203:8066/loadFile/?fileTimestamp=" + row.lastModifyTime + "&filename=" + row.filename,
+          url: "http://192.168.0.16:8066/loadFile/?fileTimestamp=" + row.lastModifyTime + "&filename=" + row.filename,
           type: "GET",
           dataType: "json",
           contentType: "application/json",

@@ -21,11 +21,6 @@
                                         <template #trigger>
                                             <el-button class="change-avatar-btn" type="primary">更换头像</el-button>
                                         </template>
-                                        <template #tip>
-                                            <div class="el-upload__tip text-red">
-                                                头像更换后需要重新登录才会生效
-                                            </div>
-                                        </template>
                                     </el-upload>
                                 </div>
                             </div>
@@ -33,6 +28,14 @@
                                 <el-avatar :icon="UserFilled" shape="circle" :size="150" />
                             </div>
                             <div class="account-content-body-right col-6">
+                                <el-descriptions title="Your profile" direction="vertical" :column="4" :size="size">
+                                    <el-descriptions-item v-if="isLogin" label="Username">{{username}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item v-else label="Username">----------</el-descriptions-item>
+                                    <el-descriptions-item v-if="isLogin" label="Nickname">{{nickname}}
+                                    </el-descriptions-item>
+                                    <el-descriptions-item v-else label="Nickname">----------</el-descriptions-item>
+                                </el-descriptions>
                             </div>
                         </div>
                     </el-card>
@@ -48,6 +51,7 @@ import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { UserFilled } from '@element-plus/icons-vue';
 import { useRouter } from "vue-router";
+import { ElLoading } from "element-plus";
 
 export default {
     name: "MyProfileView",
@@ -59,17 +63,22 @@ export default {
         let avatarUrl = ref('');
         let avatarSrc = ref('');
         let isLogin = ref();
+        let username = ref('');
+        let nickname = ref('');
         const router = useRouter();
 
         onMounted(() => {
             console.log("into onMounted !");
             avatarSrc.value = store.state.user.profpic;
             isLogin.value = store.state.user.is_login;
+            username.value = store.state.user.username;
+            nickname.value = store.state.user.nickname;
         });
 
         const getAvatarUploadUrl = () => {
             console.log("before upload");
-            avatarUrl.value = "http://192.168.31.203:8066/uploadFaceImg/?username=" + store.state.user.username;
+            // avatarUrl.value = "http://192.168.31.203:8066/uploadFaceImg/?username=" + store.state.user.username;
+            avatarUrl.value = "http://192.168.0.16:8066/uploadFaceImg/?username=" + store.state.user.username;
             console.log("get avatarUpload url : " + avatarUrl.value);
         }
 
@@ -79,12 +88,18 @@ export default {
             // avatarSrc.value = response.data;
             if (response.code === 1000) {
                 // TODO 在更换头像或者修改个人信息后后需要几秒延时提示用户正在跳转到登录页面
-
-                // 清空登录状态并跳转到登录页
-                store.commit("logout");
-                router.push({
-                    path: "/login/"
-                });
+                const loading = ElLoading.service({
+                    lock: true,
+                    text: '头像上传成功, 正为您跳转至登录页',
+                    background: 'rgba(0, 0, 0, 0.7)',
+                })
+                setTimeout(() => {
+                    loading.close();
+                    store.commit("logout");
+                    router.push({
+                        path: "/login/"
+                    });
+                }, 3000)
             }
         }
 
@@ -95,6 +110,8 @@ export default {
             uploadAvatarSuccess,
             UserFilled,
             isLogin,
+            username,
+            nickname,
         }
     }
 }
@@ -113,7 +130,8 @@ export default {
 
 .account-content-body {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .account-content-body-left {
